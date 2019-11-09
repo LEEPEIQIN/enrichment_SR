@@ -21,7 +21,7 @@ HR_2_test = torch.utils.data.DataLoader(test_HR, batch_size=1, shuffle=False, nu
 
 net1=common.Net_block().to(device)
 
-optimizer=torch.optim.Adadelta(net1.parameters(), lr=1.0, rho=0.9, eps=1e-06, weight_decay=0)
+optimizer=ttorch.optim.Adam(net1.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 for epoch in range(5):
     running_loss=0.0
     for i in range(1000):
