@@ -67,7 +67,7 @@ for epoch in range(5):
              del temp1,temp2
              temp[temp>1]=1
              temp[temp<0]=0
-             PSNR+=psnr(temp,HR_test)
+             PSNR+=common.psnr(temp,HR_test)
              del HR_test,LR_test,temp
     PSNR=PSNR/n_test
     print(PSNR.item())
