@@ -633,7 +633,7 @@ def net_train(net, LR_URL, LR_test_URL, LR_name, LR_test_name, net_name, a,b,c):
                 temp[temp>1]=1
                 temp[temp<0]=0
                 PSNR+=psnr(temp,HR_test)
-                del HR_test,LR_test,outputs
+                del HR_test,LR_test,temp
         PSNR=PSNR/n_test
         print(PSNR.item())
         del PSNR,n_test,temp_HR_2,temp_LR_2
@@ -688,7 +688,7 @@ def net_train(net, LR_URL, LR_test_URL, LR_name, LR_test_name, net_name, a,b,c):
                 temp[temp>1]=1
                 temp[temp<0]=0
                 PSNR+=psnr(temp,HR_test)
-                del HR_test,LR_test,outputs
+                del HR_test,LR_test,temp
         PSNR=PSNR/n_test
         print(PSNR.item())
         p.append(PSNR.item())
@@ -746,7 +746,7 @@ def net_train(net, LR_URL, LR_test_URL, LR_name, LR_test_name, net_name, a,b,c):
                 temp[temp>1]=1
                 temp[temp<0]=0
                 PSNR+=psnr(temp,HR_test)
-                del HR_test,LR_test,outputs
+                del HR_test,LR_test,temp
         PSNR=PSNR/n_test
         print(PSNR.item())
         p.append(PSNR.item())
