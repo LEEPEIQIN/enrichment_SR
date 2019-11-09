@@ -565,8 +565,10 @@ def generate_image(net,first,second):
             os.chdir(wd)
             if i<9:
                 LR_after.save(second+"_00"+str(i+1)+".png","PNG")
-            else:
+            elif i<99:
                 LR_after.save(second+"_0"+str(i+1)+".png","PNG")
+            else:
+                LR_after.save(second+"_"+str(i+1)+".png","PNG")
             os.chdir(cwd)
     return True
             
