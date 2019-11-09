@@ -24,7 +24,7 @@ net1=common.Net_block().to(device)
 optimizer=torch.optim.Adam(net1.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 for epoch in range(5):
     running_loss=0.0
-    for i in range(10):
+    for i in range(1000):
         HR,LR=common.generator("2_HR","2_LR",16,120)
         HR=HR.to(device)
         LR=LR.to(device)
