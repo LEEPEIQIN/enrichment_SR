@@ -54,10 +54,10 @@ for epoch in range(5):
              LR_bl=temp[:,:,2].reshape([1,3,int(x/2),int(y/2)]).to(device)
              LR_br=temp[:,:,3].reshape([1,3,int(x/2),int(y/2)]).to(device)
              del temp
-             LR_1=net(LR_tl).data
-             LR_2=net(LR_tr).data
-             LR_3=net(LR_bl).data
-             LR_4=net(LR_br).data
+             LR_1=net1(LR_tl).data
+             LR_2=net1(LR_tr).data
+             LR_3=net1(LR_bl).data
+             LR_4=net1(LR_br).data
              del LR_tl,LR_tr,LR_bl,LR_br
              temp1=torch.cat((LR_1,LR_2),3)
              del LR_1,LR_2
