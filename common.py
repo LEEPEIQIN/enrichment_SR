@@ -611,9 +611,28 @@ def net_train(net, LR_URL, LR_test_URL, LR_name, LR_test_name, net_name, a,b,c):
         with torch.no_grad():
             for t in range(n_test):
                 HR_test=temp_HR_2.next()[0].squeeze().to(device)
-                LR_test=temp_LR_2.next()[0].to(device)
-                outputs=net(LR_test).data.squeeze()
-                PSNR+=psnr(outputs,HR_test)
+                LR_test=temp_LR_2.next()[0]
+                _,_,x,y=LR_test.size()
+                temp=torch.nn.functional.unfold(LR_test,(int(x/2),int(y/2)),stride=(int(x/2),int(y/2)))
+                LR_tl=temp[:,:,0].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                LR_tr=temp[:,:,1].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                LR_bl=temp[:,:,2].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                LR_br=temp[:,:,3].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                del temp
+                LR_1=net(LR_tl).data
+                LR_2=net(LR_tr).data
+                LR_3=net(LR_bl).data
+                LR_4=net(LR_br).data
+                del LR_tl,LR_tr,LR_bl,LR_br
+                temp1=torch.cat((LR_1,LR_2),3)
+                del LR_1,LR_2
+                temp2=torch.cat((LR_3,LR_4),3)
+                del LR_3,LR_4
+                temp=torch.cat((temp1,temp2),2).squeeze()
+                del temp1,temp2
+                temp[temp>1]=1
+                temp[temp<0]=0
+                PSNR+=psnr(temp,HR_test)
                 del HR_test,LR_test,outputs
         PSNR=PSNR/n_test
         print(PSNR.item())
@@ -647,9 +666,28 @@ def net_train(net, LR_URL, LR_test_URL, LR_name, LR_test_name, net_name, a,b,c):
         with torch.no_grad():
             for t in range(n_test):
                 HR_test=temp_HR_2.next()[0].squeeze().to(device)
-                LR_test=temp_LR_2.next()[0].to(device)
-                outputs=net(LR_test).data.squeeze()
-                PSNR+=psnr(outputs,HR_test)
+                LR_test=temp_LR_2.next()[0]
+                _,_,x,y=LR_test.size()
+                temp=torch.nn.functional.unfold(LR_test,(int(x/2),int(y/2)),stride=(int(x/2),int(y/2)))
+                LR_tl=temp[:,:,0].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                LR_tr=temp[:,:,1].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                LR_bl=temp[:,:,2].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                LR_br=temp[:,:,3].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                del temp
+                LR_1=net(LR_tl).data
+                LR_2=net(LR_tr).data
+                LR_3=net(LR_bl).data
+                LR_4=net(LR_br).data
+                del LR_tl,LR_tr,LR_bl,LR_br
+                temp1=torch.cat((LR_1,LR_2),3)
+                del LR_1,LR_2
+                temp2=torch.cat((LR_3,LR_4),3)
+                del LR_3,LR_4
+                temp=torch.cat((temp1,temp2),2).squeeze()
+                del temp1,temp2
+                temp[temp>1]=1
+                temp[temp<0]=0
+                PSNR+=psnr(temp,HR_test)
                 del HR_test,LR_test,outputs
         PSNR=PSNR/n_test
         print(PSNR.item())
@@ -686,9 +724,28 @@ def net_train(net, LR_URL, LR_test_URL, LR_name, LR_test_name, net_name, a,b,c):
         with torch.no_grad():
             for t in range(n_test):
                 HR_test=temp_HR_2.next()[0].squeeze().to(device)
-                LR_test=temp_LR_2.next()[0].to(device)
-                outputs=net(LR_test).data.squeeze()
-                PSNR+=psnr(outputs,HR_test)
+                LR_test=temp_LR_2.next()[0]
+                _,_,x,y=LR_test.size()
+                temp=torch.nn.functional.unfold(LR_test,(int(x/2),int(y/2)),stride=(int(x/2),int(y/2)))
+                LR_tl=temp[:,:,0].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                LR_tr=temp[:,:,1].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                LR_bl=temp[:,:,2].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                LR_br=temp[:,:,3].reshape([1,3,int(x/2),int(y/2)]).to(device)
+                del temp
+                LR_1=net(LR_tl).data
+                LR_2=net(LR_tr).data
+                LR_3=net(LR_bl).data
+                LR_4=net(LR_br).data
+                del LR_tl,LR_tr,LR_bl,LR_br
+                temp1=torch.cat((LR_1,LR_2),3)
+                del LR_1,LR_2
+                temp2=torch.cat((LR_3,LR_4),3)
+                del LR_3,LR_4
+                temp=torch.cat((temp1,temp2),2).squeeze()
+                del temp1,temp2
+                temp[temp>1]=1
+                temp[temp<0]=0
+                PSNR+=psnr(temp,HR_test)
                 del HR_test,LR_test,outputs
         PSNR=PSNR/n_test
         print(PSNR.item())
