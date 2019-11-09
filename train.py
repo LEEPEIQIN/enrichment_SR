@@ -24,7 +24,7 @@ net1=common.Net_block().to(device)
 optimizer=torch.optim.Adam(net1.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 for epoch in range(5):
     running_loss=0.0
-    for i in range(1000):
+    for i in range(10):
         HR,LR=common.generator("2_HR","2_LR",16,120)
         HR=HR.to(device)
         LR=LR.to(device)
@@ -45,11 +45,30 @@ for epoch in range(5):
     temp_LR_2=iter(LR_2_test)
     with torch.no_grad():
         for t in range(n_test):
-            HR_test=temp_HR_2.next()[0].squeeze().to(device)
-            LR_test=temp_LR_2.next()[0].to(device)
-            outputs=net1(LR_test).data.squeeze()
-            PSNR+=common.psnr(outputs,HR_test)
-            del HR_test,LR_test,outputs
+             HR_test=temp_HR_2.next()[0].squeeze().to(device)
+             LR_test=temp_LR_2.next()[0]
+             _,_,x,y=LR_test.size()
+             temp=torch.nn.functional.unfold(LR_test,(int(x/2),int(y/2)),stride=(int(x/2),int(y/2)))
+             LR_tl=temp[:,:,0].reshape([1,3,int(x/2),int(y/2)]).to(device)
+             LR_tr=temp[:,:,1].reshape([1,3,int(x/2),int(y/2)]).to(device)
+             LR_bl=temp[:,:,2].reshape([1,3,int(x/2),int(y/2)]).to(device)
+             LR_br=temp[:,:,3].reshape([1,3,int(x/2),int(y/2)]).to(device)
+             del temp
+             LR_1=net(LR_tl).data
+             LR_2=net(LR_tr).data
+             LR_3=net(LR_bl).data
+             LR_4=net(LR_br).data
+             del LR_tl,LR_tr,LR_bl,LR_br
+             temp1=torch.cat((LR_1,LR_2),3)
+             del LR_1,LR_2
+             temp2=torch.cat((LR_3,LR_4),3)
+             del LR_3,LR_4
+             temp=torch.cat((temp1,temp2),2).squeeze()
+             del temp1,temp2
+             temp[temp>1]=1
+             temp[temp<0]=0
+             PSNR+=psnr(temp,HR_test)
+             del HR_test,LR_test,temp
     PSNR=PSNR/n_test
     print(PSNR.item())
     del PSNR,n_test,temp_HR_2,temp_LR_2
