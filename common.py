@@ -127,7 +127,7 @@ class RRDB(nn.Module):
     
 class Net_block(nn.Module):
     def __init__(self):
-        super(Block, self).__init__()
+        super(Net_Block, self).__init__()
         self.int = nn.Conv2d(3, 64, (3, 3), (1, 1), (1, 1))
         self.rrdb_1=RRDB()
         self.rrdb_2=RRDB()
