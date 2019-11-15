@@ -60,8 +60,8 @@ class RDB(nn.Module):
         self.conv1 = nn.Conv2d(nf, gc, 3, 1, 1, bias=bias)
         self.conv2 = nn.Conv2d(nf + gc, gc, 3, 1, 1, bias=bias)
         self.conv3 = nn.Conv2d(nf + 2 * gc, gc, 3, 1, 1, bias=bias)
-        self.conv4 = nn.Conv2d(nf + 3 * gc, nf, 3, 1, 1, bias=bias)
-        #self.conv5 = nn.Conv2d(nf + 4 * gc, nf, 3, 1, 1, bias=bias)
+        self.conv4 = nn.Conv2d(nf + 3 * gc, gc, 3, 1, 1, bias=bias)
+        self.conv5 = nn.Conv2d(nf + 4 * gc, nf, 3, 1, 1, bias=bias)
         self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
         self._initialize_weights()
         # initialization
@@ -71,14 +71,14 @@ class RDB(nn.Module):
         x2 = self.lrelu(self.conv2(torch.cat((x, x1), 1)))
         x3 = self.lrelu(self.conv3(torch.cat((x, x1, x2), 1)))
         x4 = self.lrelu(self.conv4(torch.cat((x, x1, x2, x3), 1)))
-        #x5 = self.conv5(torch.cat((x, x1, x2, x3, x4), 1))
-        return x4
+        x5 = self.conv5(torch.cat((x, x1, x2, x3, x4), 1))
+        return x5
     def _initialize_weights(self):
         init.orthogonal_(self.conv1.weight)
         init.orthogonal_(self.conv2.weight)
         init.orthogonal_(self.conv3.weight)
         init.orthogonal_(self.conv4.weight)
-        #init.orthogonal_(self.conv5.weight)
+        init.orthogonal_(self.conv5.weight)
     
          
 class CA(nn.Module):
@@ -134,7 +134,6 @@ class Net_block(nn.Module):
         self.rrdb_3=RRDB()
         self.rrdb_4=RRDB()
         self.rrdb_5=RRDB()
-        self.rrdb_6=RRDB()
         self.end1=nn.Conv2d(64, 64, (3, 3), (1, 1), (1, 1))
         self.end2=nn.Conv2d(64, 64, (3, 3), (1, 1), (1, 1))
         self.to_image=nn.Conv2d(64, 3, (3, 3), (1, 1), (1, 1))
@@ -149,7 +148,6 @@ class Net_block(nn.Module):
         x=self.rrdb_3(x)
         x=self.rrdb_4(x)
         x=self.rrdb_5(x)
-        x=self.rrdb_6(x)
         x=self.end1(x)
         x+=keep
         x=self.lrelu(self.end2(x))
