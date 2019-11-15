@@ -264,7 +264,7 @@ def net_train(net, LR_URL, LR_test_URL, LR_name, LR_test_name, net_name, a,b,c):
     for epoch in range(a):
         running_loss=0.0
         for i in range(1000):
-            HR,LR=generator("2_HR",LR_URL,16,120)
+            HR,LR=generator("2_HR",LR_URL,16,128)
             HR=HR.to(device)
             LR=LR.to(device)
             optimizer.zero_grad()
@@ -317,7 +317,7 @@ def net_train(net, LR_URL, LR_test_URL, LR_name, LR_test_name, net_name, a,b,c):
     for epoch in range(b):
         running_loss=0.0
         for i in range(1000):
-            HR,LR=generator("2_HR",LR_URL,16,120)
+            HR,LR=generator("2_HR",LR_URL,16,128)
             HR=HR.to(device)
             LR=LR.to(device)
             optimizer.zero_grad()
@@ -375,7 +375,7 @@ def net_train(net, LR_URL, LR_test_URL, LR_name, LR_test_name, net_name, a,b,c):
     for epoch in range(c):
         running_loss=0.0
         for i in range(1000):
-            HR,LR=generator("2_HR",LR_URL,16,120)
+            HR,LR=generator("2_HR",LR_URL,16,128)
             HR=HR.to(device)
             LR=LR.to(device)
             optimizer.zero_grad()
