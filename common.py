@@ -135,8 +135,7 @@ class Net_block(nn.Module):
         self.rrdb_4=RRDB()
         self.rrdb_5=RRDB()
         self.end1=nn.Conv2d(64, 64, (3, 3), (1, 1), (1, 1))
-        self.end2=nn.Conv2d(64, 128, (3, 3), (1, 1), (1, 1))
-        self.end3=nn.Conv2d(128, 64, (3, 3), (1, 1), (1, 1))
+        self.end2=nn.Conv2d(64, 64, (3, 3), (1, 1), (1, 1))
         self.to_image=nn.Conv2d(64, 3, (3, 3), (1, 1), (1, 1))
         self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
         self._initialize_weights()
@@ -152,14 +151,12 @@ class Net_block(nn.Module):
         x=self.end1(x)
         x+=keep
         x=self.lrelu(self.end2(x))
-        x=self.lrelu(self.end3(x))
         x=self.to_image(x)
         return x
     def _initialize_weights(self):
         init.orthogonal_(self.int.weight)
         init.orthogonal_(self.end1.weight)
         init.orthogonal_(self.end2.weight)
-        init.orthogonal_(self.end3.weight)
         init.orthogonal_(self.to_image.weight)
         
         
